@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ücretsiz Kaynaklar</title>
+<meta name="description" content="Videolardaki promptlar, PDF rehberler ve SFX paketleri. Hepsi ücretsiz, kayıt yok.">
+<meta name="theme-color" content="#221D18">
+<meta property="og:title" content="Ücretsiz Kaynaklar">
+<meta property="og:description" content="Videolardaki promptlar, PDF rehberler ve SFX paketleri. Hepsi ücretsiz.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23221D18'/%3E%3Cpath d='M9 17l5 5 9-12' stroke='%23CB7258' stroke-width='3.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --zemin: #221D18;
+    --zemin-2: #2B251F;
+    --kart: #2F2820;
+    --cizgi: #4C493F;
+    --yazi: #E3DECD;
+    --soluk: #A9A291;
+    --vurgu: #CB7258;
+    --vurgu-2: #F0A584;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--zemin);
+    color: var(--yazi);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+  }
+  .sayfa { max-width: 560px; margin: 0 auto; padding: 28px 16px 56px; }
+  header { text-align: center; padding: 12px 0 20px; }
+  .rozet {
+    display: inline-block; font: 600 12px/1 ui-monospace, Consolas, monospace;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--vurgu-2);
+    border: 1px solid var(--cizgi); border-radius: 999px; padding: 7px 12px;
+  }
+  h1 { font-size: clamp(28px, 8vw, 38px); line-height: 1.1; margin: 16px 0 10px; letter-spacing: -.02em; }
+  h1 em { font-family: Georgia, "Times New Roman", serif; font-weight: 400; color: var(--vurgu); }
+  header p { margin: 0 auto; max-width: 400px; color: var(--soluk); }
+
+  nav.sekmeler {
+    position: sticky; top: 0; z-index: 2; display: flex; gap: 6px;
+    background: var(--zemin); padding: 10px 0; margin: 8px 0 14px;
+  }
+  nav.sekmeler button {
+    flex: 1; min-height: 44px; border: 1px solid var(--cizgi); border-radius: 12px;
+    background: transparent; color: var(--soluk); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  nav.sekmeler button[aria-selected="true"] { background: var(--vurgu); border-color: var(--vurgu); color: var(--zemin); }
+  nav.sekmeler .sayi { opacity: .7; font-weight: 500; }
+
+  .liste { display: grid; gap: 12px; }
+  .kart {
+    background: var(--kart); border: 1px solid var(--cizgi); border-radius: var(--radius);
+    padding: 16px;
+  }
+  .ust { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .kart h2 { font-size: 17px; margin: 0; line-height: 1.3; }
+  .etiket {
+    flex-shrink: 0; font: 600 11px/1 ui-monospace, Consolas, monospace; text-transform: uppercase;
+    color: var(--vurgu-2); letter-spacing: .06em;
+  }
+  .kart p { margin: 6px 0 0; color: var(--soluk); font-size: 14px; }
+  .prompt {
+    margin: 12px 0 0; padding: 12px; background: var(--zemin); border-radius: 10px;
+    font: 13.5px/1.55 ui-monospace, Consolas, monospace; white-space: pre-wrap; word-break: break-word;
+    max-height: 168px; overflow: hidden; position: relative;
+  }
+  .prompt.acik { max-height: none; }
+  .prompt:not(.acik)::after {
+    content: ""; position: absolute; inset: auto 0 0 0; height: 48px;
+    background: linear-gradient(transparent, var(--zemin));
+  }
+  .eylemler { display: flex; gap: 8px; margin-top: 12px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 44px; padding: 0 16px; border-radius: 10px; border: 0; cursor: pointer;
+    font: inherit; font-size: 15px; font-weight: 600; line-height: 1; text-decoration: none;
+    background: var(--vurgu); color: var(--zemin); flex: 1;
+  }
+  .btn.ikincil { background: transparent; color: var(--yazi); border: 1px solid var(--cizgi); flex: 0 0 auto; }
+  .btn:focus-visible, nav.sekmeler button:focus-visible { outline: 2px solid var(--vurgu-2); outline-offset: 2px; }
+  .boyut { font-weight: 500; opacity: .75; font-size: 13px; }
+
+  .bos {
+    text-align: center; padding: 36px 20px; border: 1px dashed var(--cizgi); border-radius: var(--radius);
+    color: var(--soluk);
+  }
+  .bos strong { display: block; color: var(--yazi); font-size: 17px; margin-bottom: 4px; }
+
+  footer { margin-top: 36px; text-align: center; color: var(--soluk); font-size: 13px; }
+  footer a { color: var(--vurgu-2); }
+
+  .bildirim {
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0;
+    background: var(--yazi); color: var(--zemin); font-weight: 600; font-size: 14px;
+    padding: 12px 18px; border-radius: 999px; transition: .2s; pointer-events: none;
+  }
+  .bildirim.goster { opacity: 1; transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+<div class="sayfa">
+  <header>
+    <span class="rozet">Ücretsiz · Kayıt yok</span>
+    <h1>Videolardaki her şey <em>burada</em></h1>
+    <p>Promptlar, PDF rehberler ve SFX paketleri. Kopyala, indir, kullan.</p>
+  </header>
+
+  <nav class="sekmeler" role="tablist" aria-label="Kaynak türü">
+    <button role="tab" data-sekme="promptlar" aria-selected="true">Promptlar <span class="sayi"></span></button>
+    <button role="tab" data-sekme="rehberler" aria-selected="false">Rehberler <span class="sayi"></span></button>
+    <button role="tab" data-sekme="sesler" aria-selected="false">SFX <span class="sayi"></span></button>
+  </nav>
+
+  <main id="liste" class="liste" role="tabpanel" aria-live="polite"></main>
+
+  <footer>
+    <p>Yeni paketler her hafta geliyor. Instagram'da takipte kal.</p>
+  </footer>
+</div>
+<div class="bildirim" id="bildirim" role="status"></div>
+
+<script src="kaynaklar.js"></script>
+<script>
+(function () {
+  var veri = window.KAYNAKLAR || { promptlar: [], rehberler: [], sesler: [] };
+  var bosMetin = {
+    promptlar: ["İlk promptlar yolda", "Videodaki promptu burada bulacaksın. Yakında eklenecek."],
+    rehberler: ["İlk rehberler hazırlanıyor", "Adım adım PDF rehberler yakında burada."],
+    sesler: ["İlk SFX paketi yolda", "Kurguda kullandığım sesler yakında burada."]
+  };
+  var liste = document.getElementById("liste");
+  var sekmeler = document.querySelectorAll("nav.sekmeler button");
+
+  function yeniUstte(a, b) { return String(b.tarih || "").localeCompare(String(a.tarih || "")); }
+  function el(etiket, sinif, metin) {
+    var e = document.createElement(etiket);
+    if (sinif) e.className = sinif;
+    if (metin != null) e.textContent = metin;
+    return e;
+  }
+
+  function kartOlustur(tur, k) {
+    var kart = el("article", "kart");
+    var ust = el("div", "ust");
+    ust.appendChild(el("h2", null, k.baslik || ""));
+    if (k.etiket) ust.appendChild(el("span", "etiket", k.etiket));
+    kart.appendChild(ust);
+    if (k.aciklama) kart.appendChild(el("p", null, k.aciklama));
+
+    var eylem = el("div", "eylemler");
+    if (tur === "promptlar") {
+      var kutu = el("pre", "prompt", k.prompt || "");
+      kart.appendChild(kutu);
+      var kopyala = el("button", "btn", "Promptu kopyala");
+      kopyala.type = "button";
+      kopyala.addEventListener("click", function () { kopyalaMetin(k.prompt || ""); });
+      eylem.appendChild(kopyala);
+      if ((k.prompt || "").length > 280) {
+        var ac = el("button", "btn ikincil", "Tümü");
+        ac.type = "button";
+        ac.addEventListener("click", function () {
+          var acik = kutu.classList.toggle("acik");
+          ac.textContent = acik ? "Daralt" : "Tümü";
+        });
+        eylem.appendChild(ac);
+      }
+    } else {
+      var indir = el("a", "btn");
+      indir.href = k.dosya || "#";
+      indir.setAttribute("download", "");
+      indir.rel = "noopener";
+      indir.appendChild(document.createTextNode(tur === "sesler" ? "Paketi indir" : "PDF'i indir"));
+      if (k.boyut) indir.appendChild(el("span", "boyut", "· " + k.boyut));
+      eylem.appendChild(indir);
+    }
+    kart.appendChild(eylem);
+    return kart;
+  }
+
+  function goster(tur) {
+    sekmeler.forEach(function (b) { b.setAttribute("aria-selected", String(b.dataset.sekme === tur)); });
+    liste.innerHTML = "";
+    var ogeler = (veri[tur] || []).slice().sort(yeniUstte);
+    if (!ogeler.length) {
+      var bos = el("div", "bos");
+      bos.appendChild(el("strong", null, bosMetin[tur][0]));
+      bos.appendChild(document.createTextNode(bosMetin[tur][1]));
+      liste.appendChild(bos);
+      return;
+    }
+    ogeler.forEach(function (k) { liste.appendChild(kartOlustur(tur, k)); });
+  }
+
+  var bildirim = document.getElementById("bildirim"), zaman;
+  function haber(metin) {
+    bildirim.textContent = metin;
+    bildirim.classList.add("goster");
+    clearTimeout(zaman);
+    zaman = setTimeout(function () { bildirim.classList.remove("goster"); }, 1800);
+  }
+  function kopyalaMetin(metin) {
+    function eskiYol() {
+      var t = document.createElement("textarea");
+      t.value = metin; t.setAttribute("readonly", ""); t.style.position = "fixed"; t.style.opacity = "0";
+      document.body.appendChild(t); t.select(); t.setSelectionRange(0, metin.length);
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(t);
+      haber(ok ? "Kopyalandı ✓" : "Kopyalanamadı, metni basılı tut");
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(metin).then(function () { haber("Kopyalandı ✓"); }, eskiYol);
+    } else { eskiYol(); }
+  }
+
+  sekmeler.forEach(function (b) {
+    var n = (veri[b.dataset.sekme] || []).length;
+    b.querySelector(".sayi").textContent = n ? "(" + n + ")" : "";
+    b.addEventListener("click", function () {
+      goster(b.dataset.sekme);
+      if (history.replaceState) history.replaceState(null, "", "#" + b.dataset.sekme);
+    });
+  });
+
+  var bas = (location.hash || "").slice(1);
+  goster(veri[bas] ? bas : "promptlar");
+})();
+</script>
+</body>
+</html>
